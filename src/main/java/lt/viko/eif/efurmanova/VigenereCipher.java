@@ -6,6 +6,8 @@ public abstract class VigenereCipher {
     public abstract String decrypt (String text, String key);
 
     protected abstract boolean isValidKey (String key);
+
+    public abstract String getModeName();
     public abstract String getAlphabetDescription();
 
 }
