@@ -7,14 +7,12 @@ public class ExtendedMode extends VigenereCipher {
 
     @Override
     public String encrypt(String text, String key) {
-        // TODO: Implementuoti šifravimą
         System.out.println("ExtendedMode.encrypt() - dar neimplementuota");
         return text;
     }
 
     @Override
     public String decrypt(String text, String key) {
-        // TODO: Implementuoti dešifravimą
         System.out.println("ExtendedMode.decrypt() - dar neimplementuota");
         return text;
     }
@@ -35,5 +33,3 @@ public class ExtendedMode extends VigenereCipher {
                 " (Number of symbols: " + RANGE + ")";
     }
 }
-
-
