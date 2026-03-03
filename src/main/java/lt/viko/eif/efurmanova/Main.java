@@ -13,16 +13,11 @@ public class Main {
         while (running) {
             try {
                 VigenereCipher cipher = selectMode();
-                if (cipher == null) {
-                    running = false;
-                    break;
-                }
-
                 String text = getInputText();
                 String key = getKey(cipher);
                 processCipher(cipher, text, key);
 
-                System.out.println("\nPlease press ENTER to return to the main menu...");
+                System.out.println("Please press ENTER to return to the main menu...");
                 scanner.nextLine();
 
             } catch (Exception e) {
