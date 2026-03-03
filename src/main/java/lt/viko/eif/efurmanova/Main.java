@@ -3,45 +3,69 @@ package lt.viko.eif.efurmanova;
 import java.util.Scanner;
 
 public class Main {
+
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        printWelcomeMessage();
+        boolean running = true;
 
-        System.out.println(" ===================================");
-        System.out.println("    VIGENERE CIPHER SYSTEM V1.0");
-        System.out.println(" ====================================");
+        while (running) {
+            try {
+                VigenereCipher cipher = selectMode();
+                if (cipher == null) {
+                    running = false;
+                    break;
+                }
 
-        try {
-            VigenereCipher cipher = selectMode();
-            String text = getInputText();
-            String key = getKey(cipher);
+                String text = getInputText();
+                String key = getKey(cipher);
+                processCipher(cipher, text, key);
 
-            processCipher(cipher, text, key);
+                System.out.println("\nPlease press ENTER to return to the main menu...");
+                scanner.nextLine();
 
-        } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
-        } finally {
-            scanner.close();
+            } catch (Exception e) {
+                System.err.println("Error: " + e.getMessage());
+            }
         }
+
+        scanner.close();
+        printGoodbye();
+    }
+
+    private static void printWelcomeMessage() {
+        System.out.println(" ===================================");
+        System.out.println("    VIGENERE CIPHER SYSTEM V2.0");
+        System.out.println(" ====================================");
     }
 
     private static VigenereCipher selectMode() {
         while (true) {
-            System.out.println("Please select mode");
+            System.out.println("\nPlease select mode:");
             System.out.println("1. Basic Vigenere Mode (Latin alphabet only)");
-            System.out.println("2. Extended Vigenere Mode (ASCII 32-126");
-            System.out.println(" Your choice: ");
+            System.out.println("2. Extended Vigenere Mode (ASCII 32-126)");
+            System.out.println("0. Exit");
+            System.out.print("Your choice: ");
 
             String choice = scanner.nextLine().trim();
+
             switch (choice) {
+                case "0":
+                    return null;
+
                 case "1":
                     VigenereCipher basicMode = new BasicMode();
-                    System.out.println("\n You chose: " + basicMode);
+                    System.out.println("\nYou chose: " + basicMode.getModeName());
                     System.out.println(" " + basicMode.getAlphabetDescription());
-                    return new BasicMode();
+                    return basicMode;
+
                 case "2":
-                    System.out.println("Extended Vigenere Mode (ASCII 32-126)");
-                    return new ExtendedMode();
+                    VigenereCipher extendedMode = new ExtendedMode();
+                    System.out.println("\nYou chose: " + extendedMode.getModeName());
+                    System.out.println(" " + extendedMode.getAlphabetDescription());
+                    return extendedMode;
+
                 default:
                     System.out.println("Error: invalid choice, please try again");
             }
@@ -49,13 +73,13 @@ public class Main {
     }
 
     private static String getInputText() {
-        System.out.println("Please enter the text: ");
+        System.out.print("Please enter the text: ");
         return scanner.nextLine();
     }
 
     private static String getKey(VigenereCipher cipher) {
         while (true) {
-            System.out.println("Please enter the key: ");
+            System.out.print("Please enter the key: ");
             String key = scanner.nextLine();
 
             if (cipher instanceof BasicMode) {
@@ -65,8 +89,13 @@ public class Main {
                     continue;
                 }
                 return key;
+            } else {
+                if (key.isEmpty()) {
+                    System.out.println("Error: The key cannot be empty");
+                    continue;
+                }
+                return key;
             }
-            return key;
         }
     }
 
@@ -85,10 +114,18 @@ public class Main {
             System.out.println("Decrypted text: " + decrypted);
 
             if (text.equals(decrypted)) {
-                System.out.println("Mode works successfully");
+                System.out.println("Decryption was successful!");
+            } else {
+                System.out.println("Ups, something is wrong, decryption failed!");
             }
         } catch (IllegalArgumentException e) {
             System.err.println("Error: " + e.getMessage());
         }
+    }
+
+    private static void printGoodbye() {
+        System.out.println("=====================================");
+        System.out.println("See you soon!");
+        System.out.println("=====================================");
     }
 }

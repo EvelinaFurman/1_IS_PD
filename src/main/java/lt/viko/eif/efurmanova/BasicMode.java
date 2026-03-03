@@ -92,7 +92,7 @@ public class BasicMode extends VigenereCipher {
 
         @Override
         public String getModeName () {
-            return "MAIN MODE (Latin alphabet only";
+            return "MAIN MODE (Latin alphabet only)";
         }
 
         @Override
